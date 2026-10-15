@@ -180,9 +180,9 @@ input:focus, textarea:focus { border-color: #059669; background-color: white; }
 .toast-notification.show { transform: translateX(-50%) translateY(0); }
 
 /* Pulsante elimina singola segnalazione */
-.delete-single-btn {
-    background-color: #dc2626; color: rgb(255, 0, 0); border: none; border-radius: 12px;
-    padding: 12px; font-size: 0.85rem; font-weight: 600; cursor: pointer;
+#btnEliminaSingola {
+    background-color: #dc2626 !important; color: white !important; border: none !important;
+    border-radius: 12px; padding: 12px; font-size: 0.85rem; font-weight: 600; cursor: pointer;
     display: flex; align-items: center; justify-content: center; gap: 8px;
 }
-.delete-single-btn:hover { background-color: #b91c1c; }
+#btnEliminaSingola:hover { background-color: #b91c1c !important; }
