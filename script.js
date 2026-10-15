@@ -17,6 +17,7 @@ let immagineBase64 = null;
 let fotoMotriceBase64 = null;
 let fotoRimorchioBase64 = null;
 let listaSegnalazioni = [];
+let segnalazioneAperta = null;
 
 document.addEventListener('DOMContentLoaded', avvia);
 
@@ -66,6 +67,7 @@ function applicaPermessi() {
     }
     // Solo l'admin può cancellare lo storico
     if (!puoCancellare) document.getElementById('btnCancellaStorico').style.display = 'none';
+    if (!puoCancellare) document.getElementById('btnEliminaSingola').style.display = 'none';
 }
 
 async function esci() {
@@ -337,6 +339,7 @@ function renderizzaStorico() {
 
 async function apriDettaglio(item) {
     if (!puoVedereStorico) return;
+    segnalazioneAperta = item;
 
     // Link temporanei per le tre foto
     const { data: firmati } = await db.storage
@@ -384,6 +387,35 @@ async function apriDettaglio(item) {
 
 function chiudiModale() {
     document.getElementById('modalDettaglio').classList.remove('show');
+}
+
+async function eliminaSegnalazione() {
+    if (!puoCancellare || !segnalazioneAperta) return;
+    if (!confirm('Vuoi eliminare questa segnalazione? L\'operazione non si può annullare.')) return;
+
+    const item = segnalazioneAperta;
+
+    // Elimina la riga dal database
+    const { data, error } = await db
+        .from('segnalazioni')
+        .delete()
+        .eq('id', item.id)
+        .select();
+
+    if (error || !data || data.length === 0) {
+        console.error(error);
+        mostraToast('Eliminazione non riuscita.');
+        return;
+    }
+
+    // Elimina anche le tre foto dall'archivio
+    await db.storage.from('foto').remove([item.foto_carico, item.foto_motrice, item.foto_rimorchio]);
+
+    segnalazioneAperta = null;
+    chiudiModale();
+    await caricaSegnalazioni();
+    renderizzaStorico();
+    mostraToast('Segnalazione eliminata');
 }
 
 async function svuotaStorico() {
