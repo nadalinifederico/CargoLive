@@ -389,9 +389,30 @@ function chiudiModale() {
     document.getElementById('modalDettaglio').classList.remove('show');
 }
 
+// Popup di conferma dell'app (al posto di quello del browser)
+let risolviConferma = null;
+
+function chiediConferma(titolo, testo, etichetta = 'Elimina') {
+    return new Promise(resolve => {
+        document.getElementById('confermaTitolo').textContent = titolo;
+        document.getElementById('confermaTesto').textContent = testo;
+        document.getElementById('btnConfermaOk').textContent = etichetta;
+        risolviConferma = resolve;
+        document.getElementById('modalConferma').classList.add('show');
+    });
+}
+
+function chiudiConferma(esito) {
+    document.getElementById('modalConferma').classList.remove('show');
+    if (risolviConferma) {
+        risolviConferma(esito);
+        risolviConferma = null;
+    }
+}
+
 async function eliminaSegnalazione() {
     if (!puoCancellare || !segnalazioneAperta) return;
-    if (!confirm('Vuoi eliminare questa segnalazione? L\'operazione non si può annullare.')) return;
+    if (!(await chiediConferma('Eliminare la segnalazione?', 'Verranno eliminati anche i dati e le foto. L\'operazione non si può annullare.'))) return;
 
     const item = segnalazioneAperta;
 
@@ -420,7 +441,7 @@ async function eliminaSegnalazione() {
 
 async function svuotaStorico() {
     if (!puoCancellare) return;
-    if (!confirm("Vuoi davvero eliminare tutte le segnalazioni?")) return;
+    if (!(await chiediConferma('Eliminare tutto lo storico?', 'Tutte le segnalazioni e le relative foto verranno eliminate. L\'operazione non si può annullare.', 'Elimina tutto'))) return;
 
     // Rilegge l'elenco aggiornato, così non restano foto orfane
     await caricaSegnalazioni();

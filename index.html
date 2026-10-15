@@ -301,6 +301,19 @@
             </button>
         </div>
     </div>
+
+    <!-- Popup di conferma -->
+    <div id="modalConferma" class="modal-overlay confirm-overlay" onclick="chiudiConferma(false)">
+        <div class="modal-card confirm-card" onclick="event.stopPropagation()">
+            <div class="confirm-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <h3 id="confermaTitolo">Conferma</h3>
+            <p id="confermaTesto"></p>
+            <div class="confirm-buttons">
+                <button type="button" class="confirm-btn cancel" onclick="chiudiConferma(false)">Annulla</button>
+                <button type="button" id="btnConfermaOk" class="confirm-btn danger" onclick="chiudiConferma(true)">Elimina</button>
+            </div>
+        </div>
+    </div>
  
     <div id="toast" class="toast-notification">
         <i id="toastIcon" class="fa-solid fa-circle-check"></i>

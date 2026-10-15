@@ -186,3 +186,19 @@ input:focus, textarea:focus { border-color: #059669; background-color: white; }
     display: flex; align-items: center; justify-content: center; gap: 8px;
 }
 #btnEliminaSingola:hover { background-color: #b91c1c !important; }
+
+/* Popup di conferma */
+.confirm-overlay { z-index: 1050; }
+.confirm-card { max-width: 340px; align-items: center; text-align: center; gap: 10px; }
+.confirm-icon { font-size: 2rem; color: #dc2626; }
+.confirm-card h3 { font-size: 1.05rem; color: #1e293b; }
+.confirm-card p { font-size: 0.9rem; color: #64748b; line-height: 1.4; }
+.confirm-buttons { display: flex; gap: 10px; width: 100%; margin-top: 8px; }
+.confirm-btn {
+    flex: 1; padding: 12px; border: none; border-radius: 12px;
+    font-size: 0.9rem; font-weight: 600; cursor: pointer;
+}
+.confirm-btn.cancel { background-color: #f1f5f9; color: #475569; }
+.confirm-btn.cancel:hover { background-color: #e2e8f0; }
+.confirm-btn.danger { background-color: #dc2626; color: white; }
+.confirm-btn.danger:hover { background-color: #b91c1c; }
