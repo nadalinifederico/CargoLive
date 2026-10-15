@@ -119,12 +119,22 @@ input:focus, textarea:focus { border-color: #059669; background-color: white; }
     display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 2px 4px rgba(5, 150, 105, 0.2);
 }
 .submit-btn:hover { background-color: #047857; }
+.submit-btn:disabled { opacity: 0.6; cursor: wait; }
 
-/* Storico */
-.storico-header { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 12px; padding: 0 4px; }
-.storico-header h2 { flex: 1; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #64748b; }
-.home-btn { background: none; border: none; color: #059669; font-size: 0.75rem; font-weight: 600; cursor: pointer; white-space: nowrap; }
-.clear-btn { background: none; border: none; color: #dc2626; font-size: 0.75rem; font-weight: 600; cursor: pointer; white-space: nowrap; }
+/* Storico: intestazione con pulsanti Home e Cancella tutto */
+.storico-header { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 12px; padding: 0 4px; }
+.storico-header h2 { order: 3; flex: 1 1 100%; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #64748b; }
+
+#btnHome, #btnCancellaStorico {
+    color: white; border: none; border-radius: 12px; padding: 10px 16px;
+    font-size: 0.85rem; font-weight: 600; cursor: pointer; white-space: nowrap;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+#btnHome { background-color: #059669; order: 1; }
+#btnHome:hover { background-color: #047857; }
+#btnCancellaStorico { background-color: #dc2626; order: 2; margin-left: auto; }
+#btnCancellaStorico:hover { background-color: #b91c1c; }
+
 .lista-storico { display: flex; flex-direction: column; gap: 12px; }
 .storico-item { display: flex; gap: 12px; align-items: flex-start; padding: 14px; cursor: pointer; }
 .storico-img { width: 70px; height: 70px; object-fit: cover; border-radius: 10px; border: 1px solid #f1f5f9; flex-shrink: 0; }
@@ -170,15 +180,6 @@ input:focus, textarea:focus { border-color: #059669; background-color: white; }
 .detail-value { font-size: 0.9rem; color: #1e293b; font-weight: 500; }
 .detail-value.highlight { color: #059669; font-weight: 700; }
 
-/* Toast */
-.toast-notification {
-    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px);
-    background-color: #0f172a; color: white; padding: 12px 20px; border-radius: 30px;
-    display: flex; align-items: center; gap: 10px; z-index: 1100; transition: 0.3s ease; font-size: 0.9rem; font-weight: 500; pointer-events: none;
-    width: max-content; max-width: 90vw; text-align: center;
-}
-.toast-notification.show { transform: translateX(-50%) translateY(0); }
-
 /* Pulsante elimina singola segnalazione */
 #btnEliminaSingola {
     background-color: #dc2626 !important; color: white !important; border: none !important;
@@ -202,3 +203,12 @@ input:focus, textarea:focus { border-color: #059669; background-color: white; }
 .confirm-btn.cancel:hover { background-color: #e2e8f0; }
 .confirm-btn.danger { background-color: #dc2626; color: white; }
 .confirm-btn.danger:hover { background-color: #b91c1c; }
+
+/* Toast */
+.toast-notification {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px);
+    background-color: #0f172a; color: white; padding: 12px 20px; border-radius: 30px;
+    display: flex; align-items: center; gap: 10px; z-index: 1100; transition: 0.3s ease; font-size: 0.9rem; font-weight: 500; pointer-events: none;
+    width: max-content; max-width: 90vw; text-align: center;
+}
+.toast-notification.show { transform: translateX(-50%) translateY(0); }
