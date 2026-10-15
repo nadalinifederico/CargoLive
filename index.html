@@ -247,13 +247,13 @@
         <!-- SEZIONE 2: STORICO SEGNALAZIONI -->
         <section id="sezioneStorico" class="app-section" style="display: none;">
             <div class="storico-header">
-                <button type="button" id="btnHome" onclick="cambiaTab('nuova')">
+                <h2>Riepilogo Invii (Tocca per i dettagli)</h2>
+                <button type="button" id="btnHome" class="storico-btn home" onclick="cambiaTab('nuova')">
                     <i class="fa-solid fa-house"></i> Home
                 </button>
-                <button type="button" id="btnCancellaStorico" onclick="svuotaStorico()">
+                <button type="button" id="btnCancellaStorico" class="storico-btn cancella" onclick="svuotaStorico()">
                     <i class="fa-solid fa-trash-can"></i> Cancella tutto
                 </button>
-                <h2>Riepilogo Invii (Tocca per i dettagli)</h2>
             </div>
             <div id="listaStorico" class="lista-storico"></div>
             <div id="storicoVuoto" class="card empty-card">
