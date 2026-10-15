@@ -22,8 +22,9 @@ document.addEventListener('DOMContentLoaded', avvia);
 
 async function avvia() {
     try {
-        const { data } = await db.auth.getSession();
-        if (!data || !data.session) {
+        const { data, error: errSessione } = await db.auth.getSession();
+        if (errSessione || !data || !data.session) {
+            alert('Sessione non trovata: ' + (errSessione ? errSessione.message : 'nessuna sessione'));
             window.location.href = 'login.html';
             return;
         }
@@ -37,8 +38,8 @@ async function avvia() {
             .single();
 
         if (error || !profilo) {
-            await db.auth.signOut();
-            window.location.href = 'login.html';
+            document.documentElement.style.visibility = 'visible';
+            alert('Profilo non trovato: ' + (error ? error.message : 'nessuna riga per questo utente'));
             return;
         }
 
@@ -53,7 +54,8 @@ async function avvia() {
         document.documentElement.style.visibility = 'visible';
     } catch (err) {
         console.error(err);
-        window.location.href = 'login.html';
+        document.documentElement.style.visibility = 'visible';
+        alert('Errore: ' + err.message);
     }
 }
 
