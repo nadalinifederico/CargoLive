@@ -24,7 +24,6 @@ async function avvia() {
     try {
         const { data, error: errSessione } = await db.auth.getSession();
         if (errSessione || !data || !data.session) {
-            alert('Sessione non trovata: ' + (errSessione ? errSessione.message : 'nessuna sessione'));
             window.location.href = 'login.html';
             return;
         }

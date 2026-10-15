@@ -71,6 +71,17 @@
         .login-errore {
             color: #dc2626; font-size: 0.85rem; font-weight: 600; text-align: center; display: none;
         }
+
+        /* Occhio per mostrare/nascondere la password */
+        .pwd-wrapper { position: relative; }
+        .pwd-wrapper input { padding-right: 48px; }
+        .pwd-wrapper input::-ms-reveal { display: none; }
+        .toggle-pwd {
+            position: absolute; right: 4px; top: 50%; transform: translateY(-50%);
+            width: 40px; height: 40px; background: none; border: none;
+            color: #64748b; font-size: 1rem; cursor: pointer;
+        }
+        .toggle-pwd:hover { color: #059669; }
     </style>
 </head>
 <body>
@@ -90,7 +101,12 @@
 
         <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" id="password" placeholder="Inserisci la password" autocomplete="current-password">
+            <div class="pwd-wrapper">
+                <input type="password" id="password" placeholder="Inserisci la password" autocomplete="current-password">
+                <button type="button" id="btnMostraPwd" class="toggle-pwd" aria-label="Mostra password">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
+            </div>
             <button type="button" id="btnPwdDimenticata" class="pwd-dimenticata">Password dimenticata?</button>
             <p id="infoContatti" class="info-contatti">Per informazioni contattare: xxxxxxxxx</p>
         </div>
@@ -113,6 +129,16 @@
         // Se l'utente ha già fatto l'accesso, va direttamente all'app
         db.auth.getSession().then(({ data }) => {
             if (data && data.session) window.location.href = 'index.html';
+        });
+
+        // Mostra/nasconde la password
+        document.getElementById('btnMostraPwd').addEventListener('click', function() {
+            const campo = document.getElementById('password');
+            const icona = this.querySelector('i');
+            const nascosta = campo.type === 'password';
+            campo.type = nascosta ? 'text' : 'password';
+            icona.className = nascosta ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+            this.setAttribute('aria-label', nascosta ? 'Nascondi password' : 'Mostra password');
         });
 
         // Password dimenticata: mostra/nasconde il contatto
