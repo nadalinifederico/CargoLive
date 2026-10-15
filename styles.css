@@ -181,8 +181,8 @@ input:focus, textarea:focus { border-color: #059669; background-color: white; }
 
 /* Pulsante elimina singola segnalazione */
 .delete-single-btn {
-    background-color: #fef2f2; color: #dc2626; border: 1px solid #fecaca; border-radius: 12px;
+    background-color: #dc2626; color: white; border: none; border-radius: 12px;
     padding: 12px; font-size: 0.85rem; font-weight: 600; cursor: pointer;
     display: flex; align-items: center; justify-content: center; gap: 8px;
 }
-.delete-single-btn:hover { background-color: #fee2e2; }
+.delete-single-btn:hover { background-color: #b91c1c; }
