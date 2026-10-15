@@ -6,11 +6,11 @@
     <title>CargoLive</title>
     <!-- FontAwesome per le icone -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Collegamento al file CSS esterno -->
-    <link rel="stylesheet" href="styles.css?v=2">
+    <!-- Collegamento al file CSS esterno (aumenta il numero dopo ogni modifica al CSS) -->
+    <link rel="stylesheet" href="styles.css?v=8">
 </head>
 <body>
- 
+
     <!-- Header dell'App -->
     <header class="app-header">
         <div class="header-content">
@@ -26,7 +26,7 @@
             </div>
         </div>
     </header>
- 
+
     <!-- Contenitore Principale -->
     <main class="app-main">
         <!-- Tab di Navigazione interna -->
@@ -38,11 +38,11 @@
                 <i class="fa-solid fa-list-check"></i> Storico (<span id="storicoCount">0</span>)
             </button>
         </div>
- 
+
         <!-- SEZIONE 1: MODULO NUOVA SEGNALAZIONE -->
         <section id="sezioneNuova" class="app-section">
             <form id="formSegnalazione" class="card form-card">
-               
+
                 <!-- Tipo di Rifiuto con menu personalizzato -->
                 <div class="form-group">
                     <label>Tipo di Rifiuto</label>
@@ -94,7 +94,7 @@
                         </div>
                     </div>
                 </div>
- 
+
                 <!-- Posizione con menu personalizzato -->
                 <div class="form-group">
                     <label>Posizione</label>
@@ -156,11 +156,11 @@
                         </div>
                     </div>
                 </div>
- 
+
                 <!-- SEZIONE FOTO -->
                 <div class="form-group">
                     <label>Foto Avvenuto Ritiro</label>
-                   
+
                     <!-- 1. Foto Carico -->
                     <div class="upload-box" onclick="document.getElementById('fotoInput').click()">
                         <input type="file" id="fotoInput" accept="image/*" capture="environment" style="display: none;" onchange="gestisciAnteprimaFoto(this, 'carico')">
@@ -175,10 +175,10 @@
                             </button>
                         </div>
                     </div>
- 
+
                     <!-- 2. Targhe (Motrice e Rimorchio) Affiancate -->
                     <div class="targhe-grid">
-                       
+
                         <!-- Box Targa Motrice -->
                         <div class="upload-box upload-small" onclick="document.getElementById('targaMotriceInput').click()">
                             <input type="file" id="targaMotriceInput" accept="image/*" capture="environment" style="display: none;" onchange="gestisciAnteprimaFoto(this, 'motrice')">
@@ -193,7 +193,7 @@
                                 </button>
                             </div>
                         </div>
- 
+
                         <!-- Box Targa Rimorchio -->
                         <div class="upload-box upload-small" onclick="document.getElementById('targaRimorchioInput').click()">
                             <input type="file" id="targaRimorchioInput" accept="image/*" capture="environment" style="display: none;" onchange="gestisciAnteprimaFoto(this, 'rimorchio')">
@@ -208,34 +208,34 @@
                                 </button>
                             </div>
                         </div>
- 
+
                     </div>
                 </div>
- 
+
                 <!-- Numero Formulario (Obbligatorio) -->
                 <div class="form-group">
                     <label for="numeroFormulario">Numero Formulario</label>
                     <textarea id="numeroFormulario" rows="2" placeholder="Es. XVCR000086AV"></textarea>
                 </div>
- 
+
                 <!-- Note Sicurezza -->
                 <div class="form-group">
                     <label for="noteSicurezza">Descrivere eventuali problemi di sicurezza o sversamenti</label>
                     <textarea id="noteSicurezza" rows="2" placeholder="Es. perdita di liquido, autista non indossa i DPI"></textarea>
                 </div>
- 
+
                 <!-- Note Generiche -->
                 <div class="form-group">
                     <label for="noteGeneriche">Note generiche</label>
                     <textarea id="noteGeneriche" rows="2" placeholder="Es. caricato altro rifiuto rispetto a quello pianificato"></textarea>
                 </div>
- 
+
                 <!-- Checkbox Verifica Obbligatoria -->
                 <div class="checkbox-group">
                     <input type="checkbox" id="verificaObbligatoria">
                     <label for="verificaObbligatoria">Confermo che i dati inseriti e le foto allegate sono veritieri e conformi alle procedure.</label>
                 </div>
- 
+
                 <!-- Bottone Invio -->
                 <button type="submit" id="btnInvia" class="submit-btn">
                     <i class="fa-solid fa-paper-plane"></i>
@@ -243,7 +243,7 @@
                 </button>
             </form>
         </section>
- 
+
         <!-- SEZIONE 2: STORICO SEGNALAZIONI -->
         <section id="sezioneStorico" class="app-section" style="display: none;">
             <div class="storico-header">
@@ -262,7 +262,7 @@
             </div>
         </section>
     </main>
- 
+
     <!-- Modale Dettaglio Segnalazione -->
     <div id="modalDettaglio" class="modal-overlay" onclick="chiudiModale()">
         <div class="modal-card" onclick="event.stopPropagation()">
@@ -270,12 +270,12 @@
                 <h3>Dettaglio Segnalazione</h3>
                 <button class="close-modal-btn" onclick="chiudiModale()"><i class="fa-solid fa-xmark"></i></button>
             </div>
-           
+
             <div class="modal-img-container">
                 <p class="modal-img-label">Foto Carico</p>
                 <img id="modalFoto" src="" alt="Foto Carico" class="modal-img">
             </div>
- 
+
             <div class="modal-images-row">
                 <div class="modal-img-small" id="containerModalMotrice" style="display: none;">
                     <p class="modal-img-label">Targa Motrice</p>
@@ -286,7 +286,7 @@
                     <img id="modalFotoRimorchio" src="" alt="Rimorchio" class="modal-img">
                 </div>
             </div>
- 
+
             <div class="modal-details">
                 <div class="detail-row"><span class="detail-label">Tipo Rifiuto</span><span id="modalTipo" class="detail-value highlight"></span></div>
                 <div class="detail-row"><span class="detail-label">Data e Ora Invio</span><span id="modalData" class="detail-value"></span></div>
@@ -314,12 +314,14 @@
             </div>
         </div>
     </div>
- 
+
     <div id="toast" class="toast-notification">
         <i id="toastIcon" class="fa-solid fa-circle-check"></i>
         <span id="toastMsg">Messaggio</span>
     </div>
+
+    <!-- Libreria Supabase e script dell'app (aumenta il numero dopo ogni modifica a script.js) -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="script.js"></script>
+    <script src="script.js?v=8"></script>
 </body>
 </html>
