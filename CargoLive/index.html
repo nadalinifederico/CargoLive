@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CargoLive</title>
+    <!-- FontAwesome per le icone -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Collegamento al file CSS esterno -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+ 
+    <!-- Header dell'App -->
+    <header class="app-header">
+        <div class="header-content">
+            <div class="logo-area">
+                <i class="fa-solid fa-recycle"></i>
+                <h1>CargoLive</h1>
+            </div>
+            <div class="header-right">
+                <span id="badgeContatore" class="badge">0 Segnalazioni</span>
+                <button type="button" class="logout-btn" onclick="esci()" title="Torna al login" aria-label="Torna al login">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+ 
+    <!-- Contenitore Principale -->
+    <main class="app-main">
+        <!-- Tab di Navigazione interna -->
+        <div class="tabs-container">
+            <button onclick="cambiaTab('nuova')" id="btnTabNuova" class="tab-btn active">
+                <i class="fa-solid fa-camera"></i> Nuova
+            </button>
+            <button onclick="cambiaTab('storico')" id="btnTabStorico" class="tab-btn">
+                <i class="fa-solid fa-list-check"></i> Storico (<span id="storicoCount">0</span>)
+            </button>
+        </div>
+ 
+        <!-- SEZIONE 1: MODULO NUOVA SEGNALAZIONE -->
+        <section id="sezioneNuova" class="app-section">
+            <form id="formSegnalazione" class="card form-card">
+               
+                <!-- Tipo di Rifiuto con menu personalizzato -->
+                <div class="form-group">
+                    <label>Tipo di Rifiuto</label>
+                    <div class="custom-dropdown" id="customDropdown">
+                        <div class="dropdown-header" onclick="toggleDropdown(event)">
+                            <span id="dropdownSelectedText">Seleziona tipologia</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                        <input type="hidden" id="tipoRifiuto">
+                        <div class="dropdown-list" id="dropdownList">
+                            <div class="dropdown-item" data-value="020701" onclick="selezionaOpzione(this)">020701 Rifiuti prodotti dalla operazioni di lavaggio</div>
+                            <div class="dropdown-item" data-value="020704" onclick="selezionaOpzione(this)">020704 Scarti inutilizzabili per il consumo o la trasformazione</div>
+                            <div class="dropdown-item" data-value="020705" onclick="selezionaOpzione(this)">020705 Fanghi da trattamento sul posto degli effluenti</div>
+                            <div class="dropdown-item" data-value="080318" onclick="selezionaOpzione(this)">080318 Toner per stampa esausti diversi da quelli di cui alla voce 080317</div>
+                            <div class="dropdown-item" data-value="130208" onclick="selezionaOpzione(this)">130208 Altri oli per motori,ingranaggi e lubrificazione</div>
+                            <div class="dropdown-item" data-value="150101" onclick="selezionaOpzione(this)">150101 Imballaggi in carta e cartone</div>
+                            <div class="dropdown-item" data-value="150102" onclick="selezionaOpzione(this)">150102 Fusti in plastica (Santarosa)</div>
+                            <div class="dropdown-item" data-value="150102" onclick="selezionaOpzione(this)">150102 Imballaggi in plastica (ALIPLAST)</div>
+                            <div class="dropdown-item" data-value="150103" onclick="selezionaOpzione(this)">150103 Imballaggi in Legno</div>
+                            <div class="dropdown-item" data-value="150104" onclick="selezionaOpzione(this)">150104 Imballaggi Metallici</div>
+                            <div class="dropdown-item" data-value="150106" onclick="selezionaOpzione(this)">150106 Imballaggi in materiali misti</div>
+                            <div class="dropdown-item" data-value="150107" onclick="selezionaOpzione(this)">150107 Imballaggi in vetro</div>
+                            <div class="dropdown-item" data-value="150110" onclick="selezionaOpzione(this)">150110 Imballaggi contenenti residui di sostanze pericolose</div>
+                            <div class="dropdown-item" data-value="150111" onclick="selezionaOpzione(this)">150111 Imballaggi metallici contenenti matrici solide porose pericolose, compresi contenitori a pressione</div>
+                            <div class="dropdown-item" data-value="150202" onclick="selezionaOpzione(this)">150202 Assorbenti,materiali filtranti (inclusi filtri dell'olio non specificati altrimenti)</div>
+                            <div class="dropdown-item" data-value="150203" onclick="selezionaOpzione(this)">150203 Assorbenti, materiali filtranti, stracci e indumenti protettivi fuori uso</div>
+                            <div class="dropdown-item" data-value="161002" onclick="selezionaOpzione(this)">161002 Rifiuti liquidi acquosi, diversi da quelli di cui alla voce 161001</div>
+                            <div class="dropdown-item" data-value="160214" onclick="selezionaOpzione(this)">160214 Apparecchiature fuori uso, diverse da quelle di cui alle voci da 160209 a 160213</div>
+                            <div class="dropdown-item" data-value="160216" onclick="selezionaOpzione(this)">160216 Componenti rimossi da apparecchiature fuori uso</div>
+                            <div class="dropdown-item" data-value="160304" onclick="selezionaOpzione(this)">160304 Rifiuti prodotti da attività di veicolazione ed affinazione</div>
+                            <div class="dropdown-item" data-value="160305" onclick="selezionaOpzione(this)">160305 Rifiuti organici contenenti sostanze pericolose</div>
+                            <div class="dropdown-item" data-value="160306" onclick="selezionaOpzione(this)">160306 Rifiuti organici diversi da quelli alla voce 160305</div>
+                            <div class="dropdown-item" data-value="160506" onclick="selezionaOpzione(this)">160506 Sostanze chimiche di laboratorio contenenti o costituite da sostanze pericolose, comprese le miscele di sostanze chimiche di laboratorio</div>
+                            <div class="dropdown-item" data-value="160601" onclick="selezionaOpzione(this)">160601 Batterie al Piombo</div>
+                            <div class="dropdown-item" data-value="160602" onclick="selezionaOpzione(this)">160602 Batterie al Nichel Cadmio</div>
+                            <div class="dropdown-item" data-value="160605" onclick="selezionaOpzione(this)">160605 Batterie al litio</div>
+                            <div class="dropdown-item" data-value="170405" onclick="selezionaOpzione(this)">170405 Ferro Acciaio</div>
+                            <div class="dropdown-item" data-value="170411" onclick="selezionaOpzione(this)">170411 Cavi diversi di cui alla voce 170410</div>
+                            <div class="dropdown-item" data-value="170603" onclick="selezionaOpzione(this)">170603 Lana Minerale</div>
+                            <div class="dropdown-item" data-value="170604" onclick="selezionaOpzione(this)">170604 Materiali Isolanti diversi da quelli alle voci 170601 e 170603</div>
+                            <div class="dropdown-item" data-value="170802" onclick="selezionaOpzione(this)">170802 Materiali da costruzione a base di gesso</div>
+                            <div class="dropdown-item" data-value="180103" onclick="selezionaOpzione(this)">180103 Rifiuti che devono essere raccolti e smaltiti applicando precauzioni particolari per evitare infezioni</div>
+                            <div class="dropdown-item" data-value="190904" onclick="selezionaOpzione(this)">190904 Carbone attivo Esausto</div>
+                            <div class="dropdown-item" data-value="191212" onclick="selezionaOpzione(this)">191212 Altri rifiuti (compresi materiali misti) prodotti dal trattamento meccanico dei rifiuti, diversi di quelli di cui alla voce 19 12 11</div>
+                            <div class="dropdown-item" data-value="200121" onclick="selezionaOpzione(this)">200121 Tubi fluorescenti ed altri rifiuti contenenti mercurio</div>
+                            <div class="dropdown-item" data-value="200301" onclick="selezionaOpzione(this)">200301 Rifiuti urbani non differenziati</div>
+                            <div class="dropdown-item" data-value="200303" onclick="selezionaOpzione(this)">200303 Residuo stradale</div>
+                            <div class="dropdown-item" data-value="200307" onclick="selezionaOpzione(this)">200307 Ingombranti</div>
+                        </div>
+                    </div>
+                </div>
+ 
+                <!-- Posizione con menu personalizzato -->
+                <div class="form-group">
+                    <label>Posizione</label>
+                    <div class="custom-dropdown" id="customDropdownPosizione">
+                        <div class="dropdown-header" onclick="toggleDropdownPosizione(event)">
+                            <span id="dropdownSelectedTextPosizione">Seleziona posizione</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                        <input type="hidden" id="posizione">
+                        <div class="dropdown-list" id="dropdownListPosizione">
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">020701 Isola ecologica - Microraccolta</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">020704 Isola ecologica - Microraccolta</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">020705 Zona pressa fanghi</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">080318 Isola ecologica - Microraccolta</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">130208 Isola ecologica - Microraccolta</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">150101 Area schiacciamento (Carta cartone)</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">150101 MAG 111 - EXT STI (Carta cartone)</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">150102 Isola ecologica (ALIPLAST preforme PET)</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">150102 Isola ecologica (ALIPLAST tappi)</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">150102 Isola ecologica (Plastica)</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">150102 Area schiacciamento (ALIPLAST film Nylon press)</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">150102 Area schiacciamento (ALIPLAST bottiglie PET press)</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">150102 Isola ecologica (ALIPLAST reggette press)</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">150103 Isola ecologica</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">150103 MAG 111 - EXT STI</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">150103 Parolini</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">150104 Isola ecologica (Lattine)</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">150106 MAG 111 - EXT STI</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">150106 Parolini</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">150106 Isola ecologica (Imballaggi misti Press)</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">150106 MAG 111 - EXT STI (Imballaggi misti Press)</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">150107 Isola ecologica</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">150110 Isola ecologica - Microraccolta</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">150111 Isola ecologica - Microraccolta</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">150202 Isola ecologica - Microraccolta</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">150203 Isola ecologica - Microraccolta</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">161002 Isola ecologica - Microraccolta</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">160214 Isola ecologica - Microraccolta</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">160216 Isola ecologica - Microraccolta</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">160304 Isola ecologica - Microraccolta</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">160305 Isola ecologica - Microraccolta</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">160306 Isola ecologica - Microraccolta</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">160506 Isola ecologica - Microraccolta</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">160601 Isola ecologica - Microraccolta</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">160602 Isola ecologica - Microraccolta</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">160605 Isola ecologica - Microraccolta</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">170405 Isola ecologica (Ferro acciaio)</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">170411 Isola ecologica - Microraccolta</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">170603 Isola ecologica - Microraccolta</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">170604 Isola ecologica - Microraccolta</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">170802 Isola ecologica - Microraccolta</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">180103 Laboratorio (Piastre lab)</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">190904 Isola ecologica - Microraccolta</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">191212 Isola ecologica - Microraccolta</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">200121 Isola ecologica - Microraccolta</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">200301 Lato mensa (Cassone mensa)</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">200303 Isola ecologica (Residuo stradale)</div>
+                            <div class="dropdown-item" onclick="selezionaOpzionePosizione(this)">200307 Isola ecologica - Microraccolta</div>
+                        </div>
+                    </div>
+                </div>
+ 
+                <!-- SEZIONE FOTO -->
+                <div class="form-group">
+                    <label>Foto Avvenuto Ritiro</label>
+                   
+                    <!-- 1. Foto Carico -->
+                    <div class="upload-box" onclick="document.getElementById('fotoInput').click()">
+                        <input type="file" id="fotoInput" accept="image/*" capture="environment" style="display: none;" onchange="gestisciAnteprimaFoto(this, 'carico')">
+                        <div id="placeholderFoto" class="upload-placeholder">
+                            <i class="fa-solid fa-camera"></i>
+                            <p>Tocca per foto carico</p>
+                        </div>
+                        <div id="contenitoreAnteprima" class="preview-container" style="display: none;">
+                            <img id="anteprimaFoto" src="" alt="Anteprima Carico">
+                            <button type="button" onclick="rimuoviFoto(event, 'carico')" class="remove-photo-btn">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                    </div>
+ 
+                    <!-- 2. Targhe (Motrice e Rimorchio) Affiancate -->
+                    <div class="targhe-grid">
+                       
+                        <!-- Box Targa Motrice -->
+                        <div class="upload-box upload-small" onclick="document.getElementById('targaMotriceInput').click()">
+                            <input type="file" id="targaMotriceInput" accept="image/*" capture="environment" style="display: none;" onchange="gestisciAnteprimaFoto(this, 'motrice')">
+                            <div id="placeholderMotrice" class="upload-placeholder">
+                                <i class="fa-solid fa-truck-front"></i>
+                                <p>Targa Motrice</p>
+                            </div>
+                            <div id="contenitoreAnteprimaMotrice" class="preview-container" style="display: none;">
+                                <img id="anteprimaMotrice" src="" alt="Motrice">
+                                <button type="button" onclick="rimuoviFoto(event, 'motrice')" class="remove-photo-btn">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+                        </div>
+ 
+                        <!-- Box Targa Rimorchio -->
+                        <div class="upload-box upload-small" onclick="document.getElementById('targaRimorchioInput').click()">
+                            <input type="file" id="targaRimorchioInput" accept="image/*" capture="environment" style="display: none;" onchange="gestisciAnteprimaFoto(this, 'rimorchio')">
+                            <div id="placeholderRimorchio" class="upload-placeholder">
+                                <i class="fa-solid fa-trailer"></i>
+                                <p>Targa Rimorchio</p>
+                            </div>
+                            <div id="contenitoreAnteprimaRimorchio" class="preview-container" style="display: none;">
+                                <img id="anteprimaRimorchio" src="" alt="Rimorchio">
+                                <button type="button" onclick="rimuoviFoto(event, 'rimorchio')" class="remove-photo-btn">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+                        </div>
+ 
+                    </div>
+                </div>
+ 
+                <!-- Numero Formulario (Obbligatorio) -->
+                <div class="form-group">
+                    <label for="numeroFormulario">Numero Formulario</label>
+                    <textarea id="numeroFormulario" rows="2" placeholder="Es. XVCR000086AV"></textarea>
+                </div>
+ 
+                <!-- Note Sicurezza -->
+                <div class="form-group">
+                    <label for="noteSicurezza">Descrivere eventuali problemi di sicurezza o sversamenti</label>
+                    <textarea id="noteSicurezza" rows="2" placeholder="Es. perdita di liquido, autista non indossa i DPI"></textarea>
+                </div>
+ 
+                <!-- Note Generiche -->
+                <div class="form-group">
+                    <label for="noteGeneriche">Note generiche</label>
+                    <textarea id="noteGeneriche" rows="2" placeholder="Es. caricato altro rifiuto rispetto a quello pianificato"></textarea>
+                </div>
+ 
+                <!-- Checkbox Verifica Obbligatoria -->
+                <div class="checkbox-group">
+                    <input type="checkbox" id="verificaObbligatoria">
+                    <label for="verificaObbligatoria">Confermo che i dati inseriti e le foto allegate sono veritieri e conformi alle procedure.</label>
+                </div>
+ 
+                <!-- Bottone Invio -->
+                <button type="submit" id="btnInvia" class="submit-btn">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>Invia Segnalazione</span>
+                </button>
+            </form>
+        </section>
+ 
+        <!-- SEZIONE 2: STORICO SEGNALAZIONI -->
+        <section id="sezioneStorico" class="app-section" style="display: none;">
+            <div class="storico-header">
+                <h2>Riepilogo Invii (Tocca per i dettagli)</h2>
+                <button type="button" onclick="cambiaTab('nuova')" class="home-btn">
+                    <i class="fa-solid fa-house"></i> Home
+                </button>
+                <button type="button" id="btnCancellaStorico" onclick="svuotaStorico()" class="clear-btn">
+                    <i class="fa-solid fa-trash-can"></i> Cancella tutto
+                </button>
+            </div>
+            <div id="listaStorico" class="lista-storico"></div>
+            <div id="storicoVuoto" class="card empty-card">
+                <i class="fa-solid fa-folder-open"></i>
+                <p>Nessuna segnalazione inviata finora.</p>
+            </div>
+        </section>
+    </main>
+ 
+    <!-- Modale Dettaglio Segnalazione -->
+    <div id="modalDettaglio" class="modal-overlay" onclick="chiudiModale()">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>Dettaglio Segnalazione</h3>
+                <button class="close-modal-btn" onclick="chiudiModale()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+           
+            <div class="modal-img-container">
+                <p class="modal-img-label">Foto Carico</p>
+                <img id="modalFoto" src="" alt="Foto Carico" class="modal-img">
+            </div>
+ 
+            <div class="modal-images-row">
+                <div class="modal-img-small" id="containerModalMotrice" style="display: none;">
+                    <p class="modal-img-label">Targa Motrice</p>
+                    <img id="modalFotoMotrice" src="" alt="Motrice" class="modal-img">
+                </div>
+                <div class="modal-img-small" id="containerModalRimorchio" style="display: none;">
+                    <p class="modal-img-label">Targa Rimorchio</p>
+                    <img id="modalFotoRimorchio" src="" alt="Rimorchio" class="modal-img">
+                </div>
+            </div>
+ 
+            <div class="modal-details">
+                <div class="detail-row"><span class="detail-label">Tipo Rifiuto</span><span id="modalTipo" class="detail-value highlight"></span></div>
+                <div class="detail-row"><span class="detail-label">Data e Ora Invio</span><span id="modalData" class="detail-value"></span></div>
+                <div class="detail-row"><span class="detail-label">Posizione</span><span id="modalPosizione" class="detail-value"></span></div>
+                <div class="detail-row"><span class="detail-label">Numero Formulario</span><span id="modalNumeroFormulario" class="detail-value"></span></div>
+                <div id="modalContainerNoteSicurezza" class="detail-row" style="display: none;"><span class="detail-label">Sicurezza</span><span id="modalNoteSicurezza" class="detail-value" style="font-style: italic;"></span></div>
+                <div id="modalContainerNoteGeneriche" class="detail-row" style="display: none;"><span class="detail-label">Note</span><span id="modalNoteGeneriche" class="detail-value" style="font-style: italic;"></span></div>
+            </div>
+        </div>
+    </div>
+ 
+    <div id="toast" class="toast-notification">
+        <i id="toastIcon" class="fa-solid fa-circle-check"></i>
+        <span id="toastMsg">Messaggio</span>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js"></script>
+</body>
+</html>

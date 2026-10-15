@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CargoLive - Accesso</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f1f5f9; color: #1e293b;
+            min-height: 100vh; min-height: 100dvh;
+            display: flex; justify-content: center;
+        }
+
+        /* Parte centrale a tutta altezza con sfondo */
+        .login-card {
+            background:
+                linear-gradient(rgba(255,255,255,0.20), rgba(255,255,255,0.20)),
+                url('https://media.istockphoto.com/id/2025431726/photo/abstract-watercolor-background-green.jpg?s=170667a&w=0&k=20&c=uN0O4FXHCfsIMHRxUWhvH1NoMIfzFxKOfgXV2Hf4Jb8=') center / cover no-repeat;
+            width: 100%; max-width: 480px;
+            min-height: 100vh; min-height: 100dvh;
+            padding: 24px;
+            display: flex; flex-direction: column; justify-content: center; gap: 16px;
+        }
+
+        /* Saluto centrato sopra il campo utente */
+        .saluto { text-align: center; margin-bottom: 16px; }
+        .saluto .riga-1 { font-size: 1.8rem; font-weight: 700; color: #059669; }
+        .saluto .riga-2 { font-size: 1.1rem; font-weight: 500; color: #64748b; margin: 2px 0; }
+        .saluto .riga-3 {
+            font-size: 1.8rem; font-weight: 700; color: #059669;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #64748b; }
+
+        .form-group input {
+            width: 100%; background-color: #f8fafc; border: 1px solid #cbd5e1;
+            border-radius: 10px; padding: 12px 14px; font-size: 1rem; color: #1e293b; outline: none;
+        }
+        .form-group input:focus { border-color: #059669; background-color: white; }
+
+        /* Password dimenticata */
+        .pwd-dimenticata {
+            align-self: flex-end; background: none; border: none; padding: 0;
+            color: #059669; font-size: 0.8rem; font-weight: 600; cursor: pointer;
+        }
+        .pwd-dimenticata:hover { color: #047857; text-decoration: underline; }
+        .info-contatti {
+            display: none; background-color: #f0fdf4; border: 1px solid #bbf7d0; color: #047857;
+            border-radius: 10px; padding: 10px 12px; font-size: 0.85rem; font-weight: 600; text-align: center;
+        }
+
+        .login-btn {
+            background-color: #059669; color: white; border: none; border-radius: 12px;
+            padding: 14px; font-size: 0.95rem; font-weight: 600; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            box-shadow: 0 2px 4px rgba(5, 150, 105, 0.2);
+        }
+        .login-btn:hover { background-color: #047857; }
+        .login-btn:disabled { opacity: 0.6; cursor: wait; }
+
+        .login-errore {
+            color: #dc2626; font-size: 0.85rem; font-weight: 600; text-align: center; display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <form id="formLogin" class="login-card">
+
+        <div class="saluto">
+            <div class="riga-1">Benvenuto</div>
+            <div class="riga-2">in</div>
+            <div class="riga-3"><i class="fa-solid fa-recycle"></i> CargoLive</div>
+        </div>
+
+        <div class="form-group">
+            <label for="utente">Utente</label>
+            <input type="text" id="utente" placeholder="Inserisci il tuo user" autocomplete="username" autocapitalize="none">
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Inserisci la password" autocomplete="current-password">
+            <button type="button" id="btnPwdDimenticata" class="pwd-dimenticata">Password dimenticata?</button>
+            <p id="infoContatti" class="info-contatti">Per informazioni contattare: xxxxxxxxx</p>
+        </div>
+
+        <p id="loginErrore" class="login-errore"></p>
+
+        <button type="submit" id="btnAccedi" class="login-btn">
+            <i class="fa-solid fa-right-to-bracket"></i>
+            <span>Accedi</span>
+        </button>
+    </form>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Collegamento a Supabase (la chiave "publishable" è fatta per stare nel codice)
+        const SUPABASE_URL = 'https://pvlergszyysfwnwxjkje.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_9fyhP4IaWZzZW0ZCKRVRIw_4qw3TTxb';
+        const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // Se l'utente ha già fatto l'accesso, va direttamente all'app
+        db.auth.getSession().then(({ data }) => {
+            if (data && data.session) window.location.href = 'index.html';
+        });
+
+        // Password dimenticata: mostra/nasconde il contatto
+        document.getElementById('btnPwdDimenticata').addEventListener('click', function() {
+            const info = document.getElementById('infoContatti');
+            info.style.display = info.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Accesso
+        document.getElementById('formLogin').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const utente = document.getElementById('utente').value.trim().toLowerCase();
+            const password = document.getElementById('password').value;
+            const errore = document.getElementById('loginErrore');
+            const btn = document.getElementById('btnAccedi');
+
+            if (!utente || !password) {
+                errore.textContent = 'Inserisci user e password.';
+                errore.style.display = 'block';
+                return;
+            }
+
+            btn.disabled = true;
+            errore.style.display = 'none';
+
+            // Supabase accede con l'email: l'utente scrive solo lo user, il resto lo aggiungiamo noi
+            const { error } = await db.auth.signInWithPassword({
+                email: utente + '@cargolive.app',
+                password: password
+            });
+
+            if (error) {
+                const credenzialiErrate = /invalid login credentials/i.test(error.message || '');
+                errore.textContent = credenzialiErrate
+                    ? 'User o password errati.'
+                    : 'Accesso non riuscito, controlla la connessione e riprova.';
+                errore.style.display = 'block';
+                btn.disabled = false;
+                return;
+            }
+
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>
