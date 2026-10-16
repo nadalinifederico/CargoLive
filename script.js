@@ -229,10 +229,16 @@ document.getElementById('formSegnalazione').addEventListener('submit', async fun
     btn.disabled = true;
     testoBtn.textContent = 'Invio in corso...';
 
-    const base = `${utenteId}/${Date.now()}`;
-    const percorsoCarico = `${base}_carico.jpg`;
-    const percorsoMotrice = `${base}_motrice.jpg`;
-    const percorsoRimorchio = `${base}_rimorchio.jpg`;
+    // Una cartella per ogni segnalazione: data, ora e utente (es. 2026-10-16_08-45-12_utentecaricatore1_x7k2)
+    const adesso = new Date();
+    const pad = n => String(n).padStart(2, '0');
+    const nomeCartella = `${adesso.getFullYear()}-${pad(adesso.getMonth() + 1)}-${pad(adesso.getDate())}`
+        + `_${pad(adesso.getHours())}-${pad(adesso.getMinutes())}-${pad(adesso.getSeconds())}`
+        + `_${nomeUtente}_${Math.random().toString(36).slice(2, 6)}`;
+
+    const percorsoCarico = `${nomeCartella}/carico.jpg`;
+    const percorsoMotrice = `${nomeCartella}/motrice.jpg`;
+    const percorsoRimorchio = `${nomeCartella}/rimorchio.jpg`;
 
     try {
         await caricaFoto(percorsoCarico, immagineBase64);
